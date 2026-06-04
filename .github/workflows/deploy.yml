@@ -15,9 +15,15 @@ jobs:
 
     
     steps:
-    - uses: actions/checkout@v4
-      run: docker build . -t abelclinton/next-js-app
-      run: echo ${{ secrets.DOCKER_PASSWORD }} | docker login -u ${{ secrets.DOCKER_USERNAME }} --password-stdin
-      run: docker push abelclinton/next-js-app:latest
+      - name: Checkout code
+        uses: actions/checkout@v4
 
+      - name: Build Docker image
+        run: docker build -t abelclinton/next-js-app:latest .
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Push Docker image
+        run: docker push abelclinton/next-js-app:latest
   
